@@ -1,5 +1,8 @@
 # laravel整合百度富文本编辑器
 
+# [laravel-u-editor](https://segmentfault.com/a/1190000002635263) for Laravel 5.*
+# [laravel-u-editor-packages](https://github.com/stevenyangecho/laravel-u-editor) for Laravel 5.*
+
 ```
 sql
 -- composer.json中：
