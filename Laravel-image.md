@@ -1,5 +1,7 @@
 # laravel 缩略图处理 Intervention/image
 
+# [Intervention/image](https://github.com/Intervention/image) for laravel 5.*
+
 ```
 sql
 -- 安装扩展包 image-2.3.2.tar.gz
