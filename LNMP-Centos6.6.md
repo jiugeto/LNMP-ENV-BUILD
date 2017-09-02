@@ -1,5 +1,6 @@
 Linux-Nginx-Mysql-Php 环境搭建
-# LNMP-Centos6.6，手动编译安装
+
+# LNMP-Centos6.6，手动编译安装开发环境
 
 ```
 sql
