@@ -1,5 +1,5 @@
-# Linux-Nginx-Mysql-Php 环境搭建
-# LNMP-Centos6.6
+Linux-Nginx-Mysql-Php 环境搭建
+# LNMP-Centos6.6，手动编译安装
 
 ```
 sql
@@ -177,4 +177,79 @@ vi /etc/rc.d/rc.local
 	# 文件中增加代码
 /usr/local/mysql/bin/mysqld_safe --user=mysql &
 service vsftpd start
+```
+
+libgd
+```
+sql
+cd /home/jiuge/tar
+tar -zxvf libgd-2.1.1.tar.gz
+cd libgd-2.1.1
+./configure --prefix=/usr/local/gd --with-zlib=/usr/local/zlib --with-png=/usr/local/libpng --with-jpeg=/usr/local/jpeg --with-freetype=/usr/local/freetype --with-fontconfig=/usr/local/fontconfig
+make && make install
+```
+
+安装libiconv
+```
+sql
+cd /home/jiuge/tar
+tar -zxvf libiconv-1.14.tar.gz
+cd libiconv-1.14
+./configure --prefix=/usr/local/libiconv
+make && make install
+```
+
+php安装
+```
+sql
+yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers
+cd /home/jiuge/tar
+tar -zxvf php-5.6.2.tar.gz
+cd php-5.6.2
+./configure  --prefix=/usr/local/php  --with-pdo-mysql=mysqlnd   --with-mysqli=mysqlnd   --with-mysql=mysqlnd  --with-xmlrpc --with-openssl --with-zlib --with-freetype-dir=/usr/local/freetype --with-gd --with-jpeg-dir=/usr/local/jpeg --with-png-dir=/usr/local/libpng --with-iconv=/usr/local/libiconv --enable-short-tags --enable-sockets --enable-soap --enable-mbstring --enable-static --enable-gd-native-ttf --with-curl --with-xsl --enable-ftp --with-libxml-dir=/usr/local/libxml2 --enable-gd-native-ttf --enable-zip --enable-fpm
+-- 报错：xslt-config not found. Please reinstall the libxslt >= 1.1.0 distribution
+yum install libxslt-devel
+-- 再编译
+make && make install
+```
+
+php-fpm配置
+```
+sql
+cd /usr/local/php5.6.2/etc/
+cp php-fpm.conf.default php-fpm.conf
+egrep -v ";|^$" php-fpm.conf
+	[global]
+	error_log = /var/log/php-fpm.log
+	log_level = notice
+	pid = /var/log/php/php-fpm.pid
+	[www]
+	user = nginx
+	group = nginx
+	listen = 127.0.0.1:9000
+	-- pm = dynamic
+	-- pm.max_children = 50
+	-- pm.start_servers = 20
+	-- pm.min_spare_servers = 5
+	-- pm.max_spare_servers = 35
+mkdir /var/log/php
+/usr/local/php/sbin/php-fpm
+ps -ef | grep php-fpm
+-- 修改php.ini
+cp /home/jiuge/tar/php5.6.2/php.ini-development /usr/local/php/php.ini
+short_open_tag = On
+grep short_open_tag /usr/local/php5.4.6/php.ini
+-- php-fpm开机自启
+vi /etc/rc.d/rc.local
+/usr/local/php/sbin/php-fpm &
+```
+
+整合nginx和php
+```
+sql
+vi /usr/local/nginx/conf/nginx.conf
+cd /var/log/nginx_error.log  #nginx日志目录
+cd /var/log/www_logs/  #站点日志目录
+cd /var/www/  #lnmp多站点目录
+......
 ```
