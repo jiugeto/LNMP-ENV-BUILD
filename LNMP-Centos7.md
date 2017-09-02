@@ -1,4 +1,6 @@
-# LNMP-Centos7，yum安装
+LNMP-Centos7，yum安装
+
+# LNMP-Centos7，yum安装开发环境
 
 ```
 sql
